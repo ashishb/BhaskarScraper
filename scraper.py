@@ -9,6 +9,7 @@ python scraper.py --startdate=01062013 --enddate=10062013
 """
 
 import sys
+import os
 import urllib2
 from datetime import date
 from datetime import datetime
@@ -59,13 +60,15 @@ def GetFilename(city_tag, iteratedate, page_number):
     page_number = '0%d' % page_number
   else:
     page_number = '%d' % page_number
-  return './' + city_tag.replace('%20', '_') + '_' + iteratedate.strftime('%d%m%Y') + '_' + page_number + '.pdf'
+  return './data/' + city_tag.replace('%20', '_') + '_' + iteratedate.strftime('%d%m%Y') + '_' + page_number + '.pdf'
 
 def FetchPages(startdate_str, enddate_str):
   """As of now, fetches pages only for the "BHOPAL CITY". """
   city_tag = 'BHOPAL%20CITY'
   startdate = datetime.strptime(startdate_str, '%d%m%Y')
   enddate = datetime.strptime(enddate_str, '%d%m%Y')
+  if not os.path.exists('./data'):
+    os.mkdir('./data')  # location to write pages to.
   print 'Fetchign pages between date %s and %s' %(startdate_str, enddate_str)
   iteratedate = startdate
   while iteratedate <= enddate:
